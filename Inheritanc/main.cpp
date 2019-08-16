@@ -261,7 +261,7 @@ void main()
 		delete group[i];
 	}
 
-
+	std::cout << "Have a nice day))" << std::endl;
 
 }
 
