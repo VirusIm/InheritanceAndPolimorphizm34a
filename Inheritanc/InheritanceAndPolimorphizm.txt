@@ -35,7 +35,7 @@ public:
 		this->age = age;
 	}
 
-	//				Constrictors:
+	//Constrictors:
 	Human(const std::string& firstName, const std::string& lastName, const unsigned int age)
 	{
 		set_firstName(firstName);
@@ -43,27 +43,17 @@ public:
 		set_age(age);
 		std::cout << "HConstructor:\t" << this << std::endl;
 	}
-	Human(Human& other)
-	{
-		this->firstName = other.firstName;
-		this->lastName = other.lastName;
-		this->age = other.age;
-		std::cout << "HCopyConstructor:\t" << this << std::endl;
-
-	}
-
 
 	virtual~Human()
 	{
 		std::cout << "HDestructor:\t" << this << std::endl;
 	}
 
-	//				Methods:
+	//Methods:
 	virtual void info()
 	{
 		std::cout << lastName << " " << firstName << " " << age << " year." << std::endl;
 	}
-	virtual void some_method() = 0;
 
 };
 
@@ -115,7 +105,7 @@ public:
 		this->rating = rating;
 	}
 
-	//		Constructors:
+	//		CONSTRUCTURS:
 	Student(const std::string& firstName, const std::string& lastName, unsigned age,
 		const std::string& specialty, const std::string& group,
 		unsigned year, unsigned rating) :Human(firstName, lastName, age)
@@ -131,11 +121,7 @@ public:
 		std::cout << "SDestructor:\t" << this << std::endl;
 	}
 
-	//		Methods:
-	void some_method()
-	{
-		std::cout << "Превед, я стутенд" << std::endl;
-	}
+	//		FUNCTIONS
 	void info()
 	{
 		Human::info();
@@ -148,7 +134,7 @@ public:
 
 std::ostream& operator<<(std::ostream& os, const Student& obj)
 {
-	os << (Human&)obj;
+	os << (Human)obj;
 	return os << "Спациальность: " << obj.get_specialty() << ", группа: " << obj.get_group()
 		<< ", курс: " << obj.get_year() << ", успеваемость: " << obj.get_rating() <<"%" <<std::endl;
 }
@@ -186,7 +172,7 @@ public:
 		this->salary = salary;
 	}
 
-	//			Constructors:
+	//			Construcnors:
 	Teacher(const std::string& firstName, const std::string& lastName, unsigned int age,
 		const std::string& subject, unsigned experience, unsigned salary) :Human(firstName, lastName, age)
 	{
@@ -202,11 +188,7 @@ public:
 	{
 		std::cout << "TDestructor:\t" << this << std::endl;
 	}
-	//			Methods:
-	void some_method()
-	{
-		std::cout << "Сам превед!" << std::endl;
-	}
+	//			Function
 	void info()
 	{
 		Human::info();
@@ -218,7 +200,7 @@ public:
 
 std::ostream& operator<< (std::ostream& os, const Teacher& obj)
 {
-	os << (Human&)obj;
+	os << (Human)obj;
 	return os << "Предмет: " << obj.get_subject() << ", стаж работы: " << obj.get_experience()
 		<< " лет, зарплата: " << obj.get_salary() << std::endl;
 }
@@ -236,8 +218,6 @@ public:
 		this->diplomaTheme = diplomaTheme;
 	}
 
-
-	//			Constructors:
 	Graduate(const std::string& firstName, const std::string& lastName, unsigned age,
 		const std::string& specialty, const std::string& group,
 		unsigned year, unsigned rating, const std::string& diplomaTheme)
@@ -250,8 +230,6 @@ public:
 	{
 		std::cout << "GDestructor:\t" << this << std::endl;
 	}
-
-	//			Methods:
 	void info()
 	{
 		Student::info();
@@ -263,7 +241,7 @@ public:
 
 std::ostream& operator<<(std::ostream& os, const Graduate& obj)
 {
-	os<<(Student&)obj;
+	os<<(Human)obj;
 	return os << "Тема дипломного проекта: " << obj.get_diplomaTheme();
 }
 
@@ -333,8 +311,6 @@ void main()
 	{
 		delete group[i];
 	}
-
-//virtual type name(parameters) = 0;		//Обявление чисто виртуального метода.
 
 	std::cout << "Have a nice day))" << std::endl;
 
