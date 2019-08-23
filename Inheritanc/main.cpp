@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+using namespace std;
 
 #define tab "\t"
 #define delimiter "\n-------------------------------------------------------------------\n"
@@ -56,6 +57,12 @@ public:
 	}
 
 };
+
+std::ostream& operator<< (std::ostream& os, const Human& obj)
+{
+	return os << obj.get_lastName() << " " << obj.get_firstName() << " " << obj.get_age() << " year " << std::endl;
+}
+
 class Student :public Human
 {
 	std::string specialty;
@@ -125,6 +132,13 @@ public:
 
 };
 
+std::ostream& operator<<(std::ostream& os, const Student& obj)
+{
+	os << (Human&)obj;
+	return os << "Специальность: " << obj.get_specialty() << ", группа: " << obj.get_group()
+		<< ", курс: " << obj.get_year() << ", успеваемость: " << obj.get_rating() << "%" << std::endl;
+}
+
 class Teacher :public Human
 {
 	std::string subject;	//Предмет
@@ -182,6 +196,14 @@ public:
 	}
 
 };
+
+std::ostream& operator<< (std::ostream& os, const Teacher& obj)
+{
+	os << (Human&)obj;
+	return os << "Предвет: " << obj.get_subject() << ", стаж работы: " << obj.get_experience()
+		<< " лет, зарплата: " << obj.get_salary() << std::endl;
+}
+
 class Graduate :public Student		//Дипломник
 {
 	std::string diplomaTheme;
@@ -210,11 +232,17 @@ public:
 	void info()
 	{
 		Student::info();
-		std::cout << "Тема диспломного проекта: " << diplomaTheme << std::endl;
+		std::cout << "Тема дипломного проекта: " << diplomaTheme << std::endl;
 	}
 
-
 };
+
+std::ostream& operator<<(std::ostream& os, const Graduate& obj)
+{
+	os << (Student&)obj;
+	return os << "Тема дипломного проекта: " << obj.get_diplomaTheme();
+}
+
 void main()
 {
 	setlocale(0, "");
@@ -250,10 +278,42 @@ void main()
 		// * указывает тип значения
 		std::cout << typeid(*group[i]).name() << std::endl;
 		//group[i]->info();
-		std::cout << *group[i] << std::endl;
+		if (typeid(*group[i]) == typeid(Student))
+		{
+			std::cout << *dynamic_cast<Student*>(group[i]) << std::endl;
+		}
+		else if (typeid(*group[i]) == typeid(Teacher))
+		{
+			std::cout << *dynamic_cast<Teacher*>(group[i]) << std::endl;
+		}
+		else if (typeid(*group[i]) == typeid(Graduate))
+		{
+			std::cout << *dynamic_cast<Graduate*>(group[i]) << std::endl;
+		}
+
+		/*
+			dynamin_cast - позволяет узнать что то про кого-то :D, <   *> указывает про кого мы хотим узнать
+		*/
+
+
+		//std::cout << *group[i] << std::endl;
 		//Перегрузить 
 	}
 
+	std::cout << delimiter << std::endl;
+	char* fileName = "D:\\ProgramData\\Microsoft\\Inheritance\\WhoNot.txt";
+	FILE* file = fopen(fileName, "w");
+	if (file)
+	{
+		char* Human;
+		bool result = fputs(Human, file);
+		if (!result)
+		{
+			std::cout << "Строка в файл успешно записана!" << std::endl;
+		}
+	}
+	else cout << "Нет доступа к файлу!" << endl;
+	fclose(file);
 	std::cout << delimiter << std::endl;
 
 	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
@@ -264,12 +324,3 @@ void main()
 	std::cout << "Have a nice day))" << std::endl;
 
 }
-
-
-
-
-
-
-
-
-
